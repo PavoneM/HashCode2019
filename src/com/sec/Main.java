@@ -19,11 +19,23 @@ public class Main {
     public static void main(String[] args) {
         try {
             List<Photo> photos = InputParser.parse(FILENAME);
+
             System.out.println(photos.size());
-            Main.saveOutput();
+            Slideshow slideshow = createSlideshow(photos);
+            Main.saveOutput(slideshow);
         } catch (Exception e) {
             e.printStackTrace();
         }
+    }
+
+    private static Slideshow createSlideshow(List<Photo> photos) {
+        Slideshow slideshow = new Slideshow();
+
+        for (Photo photo : photos) {
+            Slide slide = new Slide(photo);
+            slideshow.slidesList.add(slide);
+        }
+        return slideshow;
     }
 
     private static void saveOutput(Slideshow slideshow) {
