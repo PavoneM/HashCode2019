@@ -46,12 +46,39 @@ public class Main {
 
                 Map<String, List<Photo>> tagsMap = createTagsMap(photos);
                 Slideshow slideshow = createSlideshow(photos);
+
+                List<Slide> listSlide = slideshow.slidesList;
+
+                // step 1 : take slide with most tags
+                Slide mostTagSlide = getMostTagSlide(listSlide);
+
+                // step : repeat all slides
+                for(Slide currentSlide : listSlide ) {
+                    // step 2: compute max point
+
+                }
+
+
+
+
                 Main.saveOutput(slideshow, filename);
             } catch (Exception e) {
                 e.printStackTrace();
             }
         }
+    }
 
+
+    private static Slide getMostTagSlide(List<Slide> list) {
+        Slide mostTagSlide = list.get(0);
+        int numberTagMax = 0;
+        for(Slide slide : list) {
+            if(numberTagMax < slide.tags.size()) {
+                numberTagMax = slide.tags.size();
+                mostTagSlide = slide;
+            }
+        }
+        return mostTagSlide;
     }
 
     private static Map<String, List<Photo>> createTagsMap(List<Photo> photos) {
@@ -73,7 +100,7 @@ public class Main {
 
     private static Slideshow createSlideshow(List<Photo> photos) {
         Slideshow slideshow = new Slideshow();
-
+        
         Photo pendingVertical = null;
         for (Photo photo : photos) {
 
