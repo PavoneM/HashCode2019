@@ -19,11 +19,13 @@ public class InputParser {
     try {
       String line = bf.readLine();
       int nbPhotos = Integer.parseInt(line);
+      int currentId = 0;
       for (int i = 0; i < nbPhotos; i++) {
         line = bf.readLine();
         String[] constants = line.split(" ");
         Photo photo = new Photo();
         photo.vertical = "V".equals(constants[0]);
+        photo.id = currentId++;
         for (int j = 2; j < constants.length; j++) {
           photo.tags.add(constants[j]);
         }

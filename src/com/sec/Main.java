@@ -20,7 +20,6 @@ public class Main {
         try {
             List<Photo> photos = InputParser.parse(FILENAME);
 
-            System.out.println(photos.size());
             Slideshow slideshow = createSlideshow(photos);
             Main.saveOutput(slideshow);
         } catch (Exception e) {
@@ -43,11 +42,8 @@ public class Main {
             PrintWriter pw = new PrintWriter(new FileWriter(OUTPUTNAME));
             pw.println(slideshow.slidesList.size());
             for (Slide slide : slideshow.slidesList) {
-                pw.print(slide.photo1.id);
-                if (slide.photo2 != null) {
-                    pw.print(" ");
-                    pw.print(slide.photo2.id);
-                }
+                String line = slide.photo1.id + ((slide.photo2 != null) ? (" " + slide.photo2.id) : "");
+                pw.println(line);
             }
             pw.close();
         } catch (Exception e) {
