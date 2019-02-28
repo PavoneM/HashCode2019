@@ -11,4 +11,13 @@ public class Photo {
   public Photo() {
     this.tags = new ArrayList<>();
   }
+
+  public int hashCode() {
+    return id;
+  }
+
+  public boolean equals(Object obj) {
+    return id == ((Photo)obj).id;
+  }
+
 }

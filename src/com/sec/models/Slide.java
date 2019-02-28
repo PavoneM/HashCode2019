@@ -52,4 +52,8 @@ public class Slide {
     return id;
   }
 
+  public boolean equals(Object obj) {
+    return id == ((Slide)obj).id;
+  }
+
 }

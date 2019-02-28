@@ -11,6 +11,8 @@ import java.io.InputStreamReader;
 import java.io.PrintWriter;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.HashSet;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -101,23 +103,41 @@ public class Main {
     private static Slideshow createSlideshow(List<Photo> photos) {
         Slideshow slideshow = new Slideshow();
 
-        Photo pendingVertical = null;
+        List<Photo> pendingVertical = new LinkedList<Photo>();
         for (Photo photo : photos) {
 
-            Slide slide = null;
             if(!photo.vertical) {
-                slide = new Slide(photo);
+                slideshow.slidesList.add(new Slide(photo));
             } else {
-                if (pendingVertical != null) {
-                    slide = new Slide(pendingVertical, photo);
+                if (!pendingVertical.isEmpty()) {
+                    int indexToClean = -1;
+                    for (int i = 0; i < pendingVertical.size(); i++) {
+                        Photo pendingPhoto = pendingVertical.get(i);
+                        Set<String> tmpSet = new HashSet<String>(pendingPhoto.tags);
+                        tmpSet.retainAll(photo.tags);
+                        if (tmpSet.isEmpty()) {
+                            // ideal match
+                            slideshow.slidesList.add(new Slide(photo, pendingPhoto));
+                            indexToClean = i;
+                            break;
+                        }
+                    }
+                    if (indexToClean != -1) {
+                        pendingVertical.remove(indexToClean);
+                    } else {
+                        pendingVertical.add(photo);
+                    }
                 } else {
-                    pendingVertical = photo;
+                    pendingVertical.add(photo);
                 }
             }
-            if (slide != null) {
-                slideshow.slidesList.add(slide);
-            }
         }
+
+        // flush pending vertical
+        for (int i = 0; i < pendingVertical.size() / 2; i = i + 2) {
+            slideshow.slidesList.add(new Slide(pendingVertical.get(i), pendingVertical.get(i + 2)));
+        }
+
         return slideshow;
     }
 
