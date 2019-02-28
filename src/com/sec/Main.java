@@ -134,8 +134,8 @@ public class Main {
         }
 
         // flush pending vertical
-        for (int i = 0; i < pendingVertical.size() / 2; i = i + 2) {
-            slideshow.slidesList.add(new Slide(pendingVertical.get(i), pendingVertical.get(i + 2)));
+        for (int i = 0; i < pendingVertical.size(); i = i + 2) {
+            slideshow.slidesList.add(new Slide(pendingVertical.get(i), pendingVertical.get(i + 1)));
         }
 
         return slideshow;
