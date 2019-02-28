@@ -13,10 +13,13 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 public class Main {
     private static String FILENAME = "src/resources/a_example.txt";
     private static String OUTPUTNAME = "example.out";
+
+    public static Map<String, Set<Slide>> SLIDES_PER_TAG = new HashMap<String, Set<Slide>>();
 
     public static void main(String[] args) {
         try {
