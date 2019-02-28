@@ -6,7 +6,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class Slideshow {
-  List<Slide> slidesList;
+  public List<Slide> slidesList;
 
   public Slideshow() {
     this.slidesList = new ArrayList<>();

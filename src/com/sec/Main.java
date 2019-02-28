@@ -1,6 +1,8 @@
 package com.sec;
 
 import com.sec.models.Photo;
+import com.sec.models.Slide;
+import com.sec.models.Slideshow;
 
 import java.io.BufferedReader;
 import java.io.File;
@@ -16,14 +18,26 @@ public class Main {
     public static void main(String[] args) {
         try {
             List<Photo> photos = InputParser.parse(FILENAME);
+
             System.out.println(photos.size());
-            Main.saveOutput();
+            Slideshow slideshow = createSlideshow(photos);
+            Main.saveOutput(slideshow);
         } catch (Exception e) {
             e.printStackTrace();
         }
     }
 
-    private static void saveOutput() {
+    private static Slideshow createSlideshow(List<Photo> photos) {
+        Slideshow slideshow = new Slideshow();
+
+        for (Photo photo : photos) {
+            Slide slide = new Slide(photo);
+            slideshow.slidesList.add(slide);
+        }
+        return slideshow;
+    }
+
+    private static void saveOutput(Slideshow slideshow) {
         StringBuilder sb = new StringBuilder("");
 
         sb.append(3);
