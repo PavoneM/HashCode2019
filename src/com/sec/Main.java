@@ -22,7 +22,12 @@ public class Main {
     private static String FILENAME4 = "src/resources/d_pet_pictures.txt";
     private static String FILENAME5 = "src/resources/e_shiny_selfies.txt";
 
-    public static Map<String, Set<Slide>> SLIDES_PER_TAG = new HashMap<String, Set<Slide>>();
+    public static Map<String, Set<Slide>> SLIDES_PER_TAG;
+
+    private static void resetBetweenIterations() {
+        SLIDES_PER_TAG = new HashMap<String, Set<Slide>>();
+        Slide.CURRENT_ID = 0;
+    }
 
     public static void main(String[] args) {
         List<String> inputs = new ArrayList<>();
@@ -31,6 +36,8 @@ public class Main {
         inputs.add(FILENAME3);
         inputs.add(FILENAME4);
         inputs.add(FILENAME5);
+
+        resetBetweenIterations();
 
         for(String filename : inputs) {
 

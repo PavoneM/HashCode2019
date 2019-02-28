@@ -14,7 +14,7 @@ public class Slide {
   public Photo photo2;
   public Set<String> tags;
 
-  static int CURRENT_ID;
+  public static int CURRENT_ID;
 
   public Slide(Photo photo1) {
     this.id = CURRENT_ID++;
