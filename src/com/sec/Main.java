@@ -4,10 +4,7 @@ import com.sec.models.Photo;
 import com.sec.models.Slide;
 import com.sec.models.Slideshow;
 
-import java.io.BufferedReader;
-import java.io.File;
 import java.io.FileWriter;
-import java.io.InputStreamReader;
 import java.io.PrintWriter;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -34,10 +31,10 @@ public class Main {
     public static void main(String[] args) {
         List<String> inputs = new ArrayList<>();
         inputs.add(FILENAME1);
-        inputs.add(FILENAME2);
+//        inputs.add(FILENAME2);
         inputs.add(FILENAME3);
-        inputs.add(FILENAME4);
-        inputs.add(FILENAME5);
+//        inputs.add(FILENAME4);
+//        inputs.add(FILENAME5);
 
         for(String filename : inputs) {
             resetBetweenIterations();
@@ -47,21 +44,31 @@ public class Main {
                 List<Photo> photos = InputParser.parse(filename);
 
                 Map<String, List<Photo>> tagsMap = createTagsMap(photos);
-                Slideshow slideshow = createSlideshow(photos);
-
-                List<Slide> listSlide = slideshow.slidesList;
+                List<Slide> slideList = createSlideList(photos);
 
                 // step 1 : take slide with most tags
-                Slide mostTagSlide = getMostTagSlide(listSlide);
+                Slide mostTagSlide = getMostTagSlide(slideList);
+
+                // create slideShow
+                Slideshow slideshow = new Slideshow();
+                slideList.add(mostTagSlide);
+
+                Slide currentSlide = mostTagSlide;
+                slideList.remove(currentSlide);
 
                 // step : repeat all slides
-                for(Slide currentSlide : listSlide ) {
+                while(slideList.size() > 0) {
                     // step 2: compute max point
+                    int maxPoint = currentSlide.nbOfPointsMax();
 
+                    // step 3 : compare it to all available slides
+                    Slide nextSlide = fintNextSlide(currentSlide, slideList, maxPoint);
+
+                    // Step 4: put in list of slides
+                    slideshow.slidesList.add(nextSlide);
+                    currentSlide = nextSlide;
+                    slideList.remove(currentSlide);
                 }
-
-
-
 
                 Main.saveOutput(slideshow, filename);
             } catch (Exception e) {
@@ -70,6 +77,23 @@ public class Main {
         }
     }
 
+    private static Slide fintNextSlide(Slide currentSlide, List<Slide> listSlide, int maxPoints) {
+        Slide slideToReturn = listSlide.get(0);
+        int maxInterest = 0;
+        for(Slide slide : listSlide) {
+            if (currentSlide != slide) {
+                int interest = currentSlide.getInterestInNextSlide(slide);
+                if (interest >= maxPoints) {
+                    break;
+                }
+                if (interest >= maxInterest) {
+                    maxInterest = interest;
+                    slideToReturn = slide;
+                }
+            }
+        }
+        return slideToReturn;
+    }
 
     private static Slide getMostTagSlide(List<Slide> list) {
         Slide mostTagSlide = list.get(0);
@@ -100,14 +124,13 @@ public class Main {
         return map;
     }
 
-    private static Slideshow createSlideshow(List<Photo> photos) {
-        Slideshow slideshow = new Slideshow();
-
+    private static List<Slide> createSlideList(List<Photo> photos) {
+        List<Slide> listSlides = new ArrayList<>();
         List<Photo> pendingVertical = new LinkedList<Photo>();
         for (Photo photo : photos) {
 
             if(!photo.vertical) {
-                slideshow.slidesList.add(new Slide(photo));
+                listSlides.add(new Slide(photo));
             } else {
                 if (!pendingVertical.isEmpty()) {
                     int indexToClean = -1;
@@ -117,7 +140,7 @@ public class Main {
                         tmpSet.retainAll(photo.tags);
                         if (tmpSet.isEmpty()) {
                             // ideal match
-                            slideshow.slidesList.add(new Slide(photo, pendingPhoto));
+                            listSlides.add(new Slide(photo, pendingPhoto));
                             indexToClean = i;
                             break;
                         }
@@ -135,10 +158,10 @@ public class Main {
 
         // flush pending vertical
         for (int i = 0; i < pendingVertical.size(); i = i + 2) {
-            slideshow.slidesList.add(new Slide(pendingVertical.get(i), pendingVertical.get(i + 1)));
+            listSlides.add(new Slide(pendingVertical.get(i), pendingVertical.get(i + 1)));
         }
 
-        return slideshow;
+        return listSlides;
     }
 
     private static void saveOutput(Slideshow slideshow, String inputName) {

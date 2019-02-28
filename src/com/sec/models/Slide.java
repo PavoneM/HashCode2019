@@ -30,8 +30,8 @@ public class Slide {
     this.vertical = true;
   }
 
-  public double nbOfPointsMax() {
-    return Math.floor(tags.size()/ 2.);
+  public int nbOfPointsMax() {
+    return tags.size()/ 2;
   }
 
   // processing when adding a photo to the slide
@@ -50,6 +50,12 @@ public class Slide {
 
   public int hashCode() {
     return id;
+  }
+
+  public int getInterestInNextSlide(Slide slide2) {
+    List<String> intersec = new ArrayList<>(this.tags);
+    intersec.retainAll(slide2.tags);
+    return intersec.size();
   }
 
   public boolean equals(Object obj) {
