@@ -10,7 +10,9 @@ import java.io.FileWriter;
 import java.io.InputStreamReader;
 import java.io.PrintWriter;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 public class Main {
     private static String FILENAME = "src/resources/a_example.txt";
@@ -20,11 +22,29 @@ public class Main {
         try {
             List<Photo> photos = InputParser.parse(FILENAME);
 
+            Map<String, List<Photo>> tagsMap = createTagsMap(photos);
             Slideshow slideshow = createSlideshow(photos);
             Main.saveOutput(slideshow);
         } catch (Exception e) {
             e.printStackTrace();
         }
+    }
+
+    private static Map<String, List<Photo>> createTagsMap(List<Photo> photos) {
+        Map<String, List<Photo>> map = new HashMap<>();
+        for (Photo photo : photos) {
+            for(String tag : photo.tags) {
+                if (map.containsKey(tag)) {
+                    List<Photo> list = new ArrayList<>();
+                    list.add(photo);
+                    map.put(tag, list);
+                } else {
+                    List<Photo> list = map.get(tag);
+                    list.add(photo);
+                }
+            }
+        }
+        return map;
     }
 
     private static Slideshow createSlideshow(List<Photo> photos) {
