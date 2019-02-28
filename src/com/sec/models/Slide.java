@@ -20,11 +20,13 @@ public class Slide {
     this.id = CURRENT_ID++;
     this.photo1 = photo1;
     this.tags = new HashSet<>();
+    this.addPhoto(photo1);
   }
 
   public Slide(Photo photo1, Photo photo2) {
     this(photo1);
     this.photo2 = photo2;
+    this.addPhoto(photo2);
   }
 
   public double nbOfPointsMax() {
