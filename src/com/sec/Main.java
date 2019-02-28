@@ -1,9 +1,12 @@
 package com.sec;
 
 import com.sec.models.Photo;
+import com.sec.models.Slide;
+import com.sec.models.Slideshow;
 
 import java.io.BufferedReader;
 import java.io.File;
+import java.io.FileWriter;
 import java.io.InputStreamReader;
 import java.io.PrintWriter;
 import java.util.ArrayList;
@@ -23,19 +26,18 @@ public class Main {
         }
     }
 
-    private static void saveOutput() {
-        StringBuilder sb = new StringBuilder("");
-
-        sb.append(3);
-        sb.append(" ");
-        sb.append("4");
-        sb.append("\n");
-        sb.append("2");
-
+    private static void saveOutput(Slideshow slideshow) {
         try {
-            PrintWriter out = new PrintWriter(Main.OUTPUTNAME);
-            out.write(sb.toString());
-            out.close();
+            PrintWriter pw = new PrintWriter(new FileWriter(OUTPUTNAME));
+            pw.println(slideshow.slidesList.size());
+            for (Slide slide : slideshow.slidesList) {
+                pw.print(slide.photo1.id);
+                if (slide.photo2 != null) {
+                    pw.print(" ");
+                    pw.print(slide.photo2.id);
+                }
+            }
+            pw.close();
         } catch (Exception e) {
             e.printStackTrace();
         }

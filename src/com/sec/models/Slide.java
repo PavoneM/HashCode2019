@@ -4,11 +4,11 @@ import java.util.HashSet;
 import java.util.Set;
 
 public class Slide {
-  int id;
-  boolean vertical;
-  Photo photo1;
-  Photo photo2;
-  Set<String> tags;
+  public int id;
+  public boolean vertical;
+  public Photo photo1;
+  public Photo photo2;
+  public Set<String> tags;
 
   public Slide(Photo photo1) {
     this.photo1 = photo1;
