@@ -4,9 +4,9 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class Photo {
-  boolean vertical;
-  List<String> tags;
-  int id;
+  public boolean vertical;
+  public List<String> tags;
+  public int id;
 
   public Photo() {
     this.tags = new ArrayList<>();

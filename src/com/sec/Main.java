@@ -1,8 +1,12 @@
 package com.sec;
 
+import com.sec.models.Photo;
+
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
 import java.io.PrintWriter;
+import java.util.ArrayList;
+import java.util.List;
 
 public class Main {
     private static String FILENAME = "example.in";
@@ -10,13 +14,7 @@ public class Main {
 
     public static void main(String[] args) {
         try {
-            InputStreamReader is = new InputStreamReader(
-                Main.class.getClassLoader().getResourceAsStream(Main.FILENAME));
-            BufferedReader bf = new BufferedReader(is);
-            String line = bf.readLine();
-            String[] constants = line.split(" ");
-            int firstInt = Integer.parseInt(constants[0]);
-            System.out.println(firstInt);
+            List<Photo> photos = InputParser.parse(FILENAME);
             Main.saveOutput();
         } catch (Exception e) {
             e.printStackTrace();
