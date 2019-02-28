@@ -3,18 +3,20 @@ package com.sec;
 import com.sec.models.Photo;
 
 import java.io.BufferedReader;
+import java.io.File;
 import java.io.InputStreamReader;
 import java.io.PrintWriter;
 import java.util.ArrayList;
 import java.util.List;
 
 public class Main {
-    private static String FILENAME = "example.in";
+    private static String FILENAME = "src/resources/a_example.txt";
     private static String OUTPUTNAME = "example.out";
 
     public static void main(String[] args) {
         try {
             List<Photo> photos = InputParser.parse(FILENAME);
+            System.out.println(photos.size());
             Main.saveOutput();
         } catch (Exception e) {
             e.printStackTrace();

@@ -3,6 +3,8 @@ package com.sec;
 import com.sec.models.Photo;
 
 import java.io.BufferedReader;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.util.ArrayList;
@@ -10,8 +12,8 @@ import java.util.List;
 
 public class InputParser {
 
-  public static List<Photo> parse(String fileName) {
-    InputStreamReader is = new InputStreamReader(Main.class.getClassLoader().getResourceAsStream(fileName));
+  public static List<Photo> parse(String fileName) throws FileNotFoundException {
+    InputStreamReader is = new InputStreamReader(new FileInputStream(fileName));
     BufferedReader bf = new BufferedReader(is);
     List<Photo> photos = new ArrayList<Photo>();
     try {
