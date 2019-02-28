@@ -35,8 +35,10 @@ public class Slide {
 
   // processing when adding a photo to the slide
   private void addPhoto(Photo photo) {
-    // populate the map of slides per tag
     for (String tag : photo.tags) {
+      tags.add(tag);
+
+      // populate the map of slides per tag
       if (!Main.SLIDES_PER_TAG.containsKey(tag)) {
         Main.SLIDES_PER_TAG.put(tag, new HashSet<Slide>());
       }
