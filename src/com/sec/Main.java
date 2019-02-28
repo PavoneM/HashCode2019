@@ -16,28 +16,43 @@ import java.util.Map;
 import java.util.Set;
 
 public class Main {
-    private static String FILENAME = "src/resources/a_example.txt";
-    private static String OUTPUTNAME = "example.out";
+    private static String FILENAME1 = "src/resources/a_example.txt";
+    private static String FILENAME2 = "src/resources/b_lovely_landscapes.txt";
+    private static String FILENAME3= "src/resources/c_memorable_moments.txt";
+    private static String FILENAME4 = "src/resources/d_pet_pictures.txt";
+    private static String FILENAME5 = "src/resources/e_shiny_selfies.txt";
 
     public static Map<String, Set<Slide>> SLIDES_PER_TAG = new HashMap<String, Set<Slide>>();
 
     public static void main(String[] args) {
-        try {
-            List<Photo> photos = InputParser.parse(FILENAME);
+        List<String> inputs = new ArrayList<>();
+        inputs.add(FILENAME1);
+        inputs.add(FILENAME2);
+        inputs.add(FILENAME3);
+        inputs.add(FILENAME4);
+        inputs.add(FILENAME5);
 
-            Map<String, List<Photo>> tagsMap = createTagsMap(photos);
-            Slideshow slideshow = createSlideshow(photos);
-            Main.saveOutput(slideshow);
-        } catch (Exception e) {
-            e.printStackTrace();
+        for(String filename : inputs) {
+
+            // TODO RESET STATICS
+            try {
+                List<Photo> photos = InputParser.parse(filename);
+
+                Map<String, List<Photo>> tagsMap = createTagsMap(photos);
+                Slideshow slideshow = createSlideshow(photos);
+                Main.saveOutput(slideshow, filename);
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
         }
+
     }
 
     private static Map<String, List<Photo>> createTagsMap(List<Photo> photos) {
         Map<String, List<Photo>> map = new HashMap<>();
         for (Photo photo : photos) {
             for(String tag : photo.tags) {
-                if (map.containsKey(tag)) {
+                if (!map.containsKey(tag)) {
                     List<Photo> list = new ArrayList<>();
                     list.add(photo);
                     map.put(tag, list);
@@ -54,15 +69,18 @@ public class Main {
         Slideshow slideshow = new Slideshow();
 
         for (Photo photo : photos) {
-            Slide slide = new Slide(photo);
-            slideshow.slidesList.add(slide);
+
+            if(!photo.vertical) {
+                Slide slide = new Slide(photo);
+                slideshow.slidesList.add(slide);
+            }
         }
         return slideshow;
     }
 
-    private static void saveOutput(Slideshow slideshow) {
+    private static void saveOutput(Slideshow slideshow, String inputName) {
         try {
-            PrintWriter pw = new PrintWriter(new FileWriter(OUTPUTNAME));
+            PrintWriter pw = new PrintWriter(new FileWriter(inputName + ".out"));
             pw.println(slideshow.slidesList.size());
             for (Slide slide : slideshow.slidesList) {
                 String line = slide.photo1.id + ((slide.photo2 != null) ? (" " + slide.photo2.id) : "");
