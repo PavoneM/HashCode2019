@@ -74,10 +74,20 @@ public class Main {
     private static Slideshow createSlideshow(List<Photo> photos) {
         Slideshow slideshow = new Slideshow();
 
+        Photo pendingVertical = null;
         for (Photo photo : photos) {
 
+            Slide slide = null;
             if(!photo.vertical) {
-                Slide slide = new Slide(photo);
+                slide = new Slide(photo);
+            } else {
+                if (pendingVertical != null) {
+                    slide = new Slide(pendingVertical, photo);
+                } else {
+                    pendingVertical = photo;
+                }
+            }
+            if (slide != null) {
                 slideshow.slidesList.add(slide);
             }
         }
