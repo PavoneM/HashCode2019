@@ -100,7 +100,7 @@ public class Main {
 
     private static Slideshow createSlideshow(List<Photo> photos) {
         Slideshow slideshow = new Slideshow();
-        
+
         Photo pendingVertical = null;
         for (Photo photo : photos) {
 

@@ -27,6 +27,7 @@ public class Slide {
     this(photo1);
     this.photo2 = photo2;
     this.addPhoto(photo2);
+    this.vertical = true;
   }
 
   public double nbOfPointsMax() {
