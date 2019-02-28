@@ -37,9 +37,8 @@ public class Main {
         inputs.add(FILENAME4);
         inputs.add(FILENAME5);
 
-        resetBetweenIterations();
-
         for(String filename : inputs) {
+            resetBetweenIterations();
 
             // TODO RESET STATICS
             try {
